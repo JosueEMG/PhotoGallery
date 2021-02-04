@@ -25,7 +25,9 @@ router.get('/images/add', async (req, res) => {
 
 router.post('/images/add', async (req, res) => {
     const { title, description } = req.body 
+    console.log(req.file);
     const result = await cloudinary.v2.uploader.upload(req.file.path)
+    console.log(result);
     const newPhoto = new Photo({
         title,
         description,

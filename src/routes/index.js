@@ -26,7 +26,9 @@ router.get('/images/add', async (req, res) => {
 router.post('/images/add', async (req, res) => {
     const { title, description } = req.body 
     console.log(req.file);
-    const result = await cloudinary.v2.uploader.upload(req.file.path)
+    const result = await cloudinary.v2.uploader.upload(req.file.path, {
+        folder: 'PhotoGallery'
+    })
     console.log(result);
     const newPhoto = new Photo({
         title,
@@ -41,10 +43,7 @@ router.post('/images/add', async (req, res) => {
 
 router.get('/images/delete/:photo_id', async (req, res) => {
     const { photo_id } = req.params
-    const photo1 = await Photo.find({title: "Ahora no"})
-    console.log(photo1)
     const photo = await Photo.findByIdAndDelete(photo_id)
-    console.log(photo)
     const result = await cloudinary.v2.uploader.destroy(photo.public_id)
     console.log(result)
     res.redirect('/images/add')

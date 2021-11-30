@@ -12,7 +12,7 @@
                     <div class="input-group pb-2">
                         <div class="custom-file">
                             <input type="file" name="image" class="custom-file-input" id="inputGoupFile01">
-                            <label for="inputGoupFile01" class="custom-file-label">Choose a file</label>
+                            <label for="inputGoupFile01" class="custom-file-label" id="imageName">Choose a file</label>
                         </div>
                     </div>
                     <button class="btn btn-primary">
@@ -44,3 +44,9 @@
         </table>
     </div>
 </div>
+<script>
+    const inputGoupFile01 = document.querySelector('#inputGoupFile01')
+    inputGoupFile01.addEventListener('change', (e) => {
+        document.querySelector('#imageName').innerHTML = `${e.target.value}`
+    })
+</script>

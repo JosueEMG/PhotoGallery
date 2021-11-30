@@ -27,7 +27,8 @@ router.post('/images/add', async (req, res) => {
     const { title, description } = req.body 
 
     try {
-        if (ext === '.png' || ext === '.jpg' || ext === '.jpeg' || ext === '.gif') {
+        if (title === '' || description === '') {
+
             const result = await cloudinary.v2.uploader.upload(req.file.path, {
                 folder: 'PhotoGallery'
             })
@@ -48,10 +49,6 @@ router.post('/images/add', async (req, res) => {
     } catch (error) {
         console.log(error)
     }
-
-    
-
-    
 })
 
 router.get('/images/delete/:photo_id', async (req, res) => {

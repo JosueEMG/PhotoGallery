@@ -25,7 +25,6 @@ router.get('/images/add', async (req, res) => {
 
 router.post('/images/add', async (req, res) => {
     const { title, description } = req.body 
-    console.log(req.file);
 
     if (ext === '.png' || ext === '.jpg' || ext === '.jpeg' || ext === '.gif') {
         const result = await cloudinary.v2.uploader.upload(req.file.path, {
@@ -43,7 +42,7 @@ router.post('/images/add', async (req, res) => {
         res.redirect('/')
     } else {
         await fs.unlink(req.file.path)
-        res.status(500).json({error: 'Only images are allowed'})
+        res.redirect('/')
     }
 
     

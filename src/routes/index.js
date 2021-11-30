@@ -26,19 +26,27 @@ router.get('/images/add', async (req, res) => {
 router.post('/images/add', async (req, res) => {
     const { title, description } = req.body 
     console.log(req.file);
-    const result = await cloudinary.v2.uploader.upload(req.file.path, {
-        folder: 'PhotoGallery'
-    })
-    console.log(result);
-    const newPhoto = new Photo({
-        title,
-        description,
-        imageUrl: result.url,
-        public_id: result.public_id
-    })
-    await newPhoto.save()
-    await fs.unlink(req.file.path)
-    res.redirect('/')
+
+    if (ext === '.png' || ext === '.jpg' || ext === '.jpeg' || ext === '.gif') {
+        const result = await cloudinary.v2.uploader.upload(req.file.path, {
+            folder: 'PhotoGallery'
+        })
+    
+        const newPhoto = new Photo({
+            title,
+            description,
+            imageUrl: result.secure_url,
+            public_id: result.public_id
+        })
+        await newPhoto.save()
+        await fs.unlink(req.file.path)
+        res.redirect('/')
+    } else {
+        await fs.unlink(req.file.path)
+        res.status(500).json({error: 'Only images are allowed'})
+    }
+
+    
 })
 
 router.get('/images/delete/:photo_id', async (req, res) => {

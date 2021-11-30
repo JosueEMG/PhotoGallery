@@ -27,25 +27,22 @@ router.post('/images/add', async (req, res) => {
     const { title, description } = req.body 
 
     try {
-        if (title === '' || description === '') {
 
-            const result = await cloudinary.v2.uploader.upload(req.file.path, {
-                folder: 'PhotoGallery'
-            })
-        
-            const newPhoto = new Photo({
-                title,
-                description,
-                imageUrl: result.secure_url,
-                public_id: result.public_id
-            })
-            await newPhoto.save()
-            await fs.unlink(req.file.path)
-            res.redirect('/')
-        } else {
-            await fs.unlink(req.file.path)
-            res.redirect('/')
-        }
+
+        const result = await cloudinary.v2.uploader.upload(req.file.path, {
+            folder: 'PhotoGallery'
+        })
+    
+        const newPhoto = new Photo({
+            title,
+            description,
+            imageUrl: result.secure_url,
+            public_id: result.public_id
+        })
+        await newPhoto.save()
+        await fs.unlink(req.file.path)
+        res.redirect('/')
+
     } catch (error) {
         console.log(error)
     }
